@@ -33,7 +33,11 @@ void lcdPrint(const char* str);
 
 void lcdClear();
 
-void gr_setPixel(int x, int y);
+void lcdInvertMode();
+
+void lcdNormalMode();
+
+void gr_setPixel(int val, int x, int y);
 
 void gr_updateScreen();
 

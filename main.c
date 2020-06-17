@@ -26,6 +26,23 @@ int main(int argc, char*argv[]) {
 	lcdInit();
 	gr_drawImage(LoZimg);
 	gr_updateScreen();
+    delay(1000);
+
+    lcdClear();
+    for(uint8_t val=0; val<30; val += 1){
+        gr_setPixel(1, val, val);
+        delay(100);
+    }
+
+    for(uint8_t val=0; val<30; val += 1){
+        lcdInvertMode();
+        delay(100);
+        lcdNormalMode();
+        delay(100);
+    }
+    return 0;
+
+
 	char buf[BUF_SIZE];
 	buf[BUF_SIZE] = 0;
 	while(1){

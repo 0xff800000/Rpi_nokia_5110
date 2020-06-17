@@ -161,36 +161,53 @@ void lcdClear(){
     for(int i=0;i<Hbytes*Vbytes;i++){
         lcdWrite(LCD_D, 0x00);
     }
+    memset(frameBuffer, 0, sizeof(frameBuffer[0][0]) * Hbytes * Vbytes);
 }
 
-void gr_updateScreen()
-{
-    lcdClear();
-    for(int i=0;i<Vbytes;i++)
-    {
-        for(int j=0;j<Hbytes;j++)
-        {
+void lcdCursorY(uint8_t y){
+    lcdWrite(LCD_C, 0x40 | (0x7 & y/8));
+}
+
+void lcdCursorX(uint8_t x){
+    lcdWrite(LCD_C, 0x80 | (0x7f & x));
+}
+
+void lcdResetCursor(){
+    lcdCursorX(0);
+    lcdCursorY(0);
+}
+
+void lcdInvertMode(){
+    lcdWrite(LCD_C, 0x0d);
+}
+
+void lcdNormalMode(){
+    lcdWrite(LCD_C, 0x0c);
+}
+
+void gr_updateScreen(){
+    lcdResetCursor();
+    for(int i=0;i<Vbytes;i++){
+        for(int j=0;j<Hbytes;j++){
             lcdWrite(LCD_D, frameBuffer[j][i]); // This can be done in burst
         }
     }
 }
 
-void gr_drawImage(const uint8_t*image)
-{
+void gr_drawImage(const uint8_t*image){
     int i=0;
-    for(int h=0;h<Hbytes;h++)
-    {
-        for(int v=0;v<Vbytes;v++)
-        {
+    for(int h=0;h<Hbytes;h++){
+        for(int v=0;v<Vbytes;v++){
             frameBuffer[h][v]=image[i++];
         }
     }
 }
 
-void gr_setPixel(int x, int y)
-{
-    if(x<=Hbytes-1 && y<=Vbytes*8-1)
-    {
-        frameBuffer[x][y/8] |= (0x01<<(y%8));
+void gr_setPixel(int val, int x, int y){
+    lcdCursorY(y);
+    lcdCursorX(x);
+    if(x<=Hbytes-1 && y<=Vbytes*8-1){
+        frameBuffer[x][y/8] = ((0x01&val)<<(y%8)) | (~((0x01)<<(y%8)) & frameBuffer[x][y/8]);
     }
+    lcdWrite(LCD_D, frameBuffer[x][y/8]);
 }
