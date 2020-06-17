@@ -28,7 +28,6 @@ void filter_utf8(char*in, char*out){
                 this_byte = this_byte<<1;
             }
             if(num_bytes == 0) num_bytes = 1;
-            //printf("%d num bytes\n",num_bytes);
             i += num_bytes - 1;
         }
 
@@ -53,17 +52,9 @@ int main(int argc, char*argv[]) {
 		int n = read(fd, &buf, BUF_SIZE-1);
 		if(n <= 0)break;
         filter_utf8(buf, filter_buf);
-        //printf("*********************************\n");
-		//for(int i=0;i<strlen(buf);i++)printf("%x:%c,",(int)buf[i],buf[i]);
-        //printf("\n");
-        //printf("=================================\n");
-		//for(int i=0;i<strlen(filter_buf);i++)printf("%x:%c,",(int)filter_buf[i],filter_buf[i]);
-        //printf("\n");
-        //printf("*********************************\n");
 		lcdPrintFormatted((const char*)filter_buf);
         lseek(fd, 0, 0);
         usleep(20000);
-        //usleep(2000000);
 	}
 	return 0;
 }

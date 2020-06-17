@@ -12,9 +12,12 @@ extern "C" {
 
 #include <stdint.h>
 #include <stdbool.h>
+#include <string.h>
 
 #define LCD_C false
 #define LCD_D true
+#define WIDTH 84
+#define HEIGHT 48
 
 #define nullptr 0
 

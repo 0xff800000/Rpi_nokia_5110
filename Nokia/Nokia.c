@@ -31,7 +31,7 @@ uint8_t frameBuffer[Hbytes][Vbytes] = {{0}};
 // SPI parameters
 uint8_t bits = 8;
 uint8_t mode = 0;
-const int frequency = 1e6;
+const int frequency = 10e6;
 int spi0fd = 0;
 
 // Pins
